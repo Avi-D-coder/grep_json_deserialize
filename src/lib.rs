@@ -16,15 +16,15 @@ extern crate base64;
 #[serde(rename_all = "lowercase")]
 #[serde(tag = "type", content = "data")]
 pub enum Type {
-    /// As specified in: https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#message-begin
+    /// As specified in: [message-begin](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#message-begin).
     Begin { path: ArbitraryData },
-    /// As specified in: https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#message-end
+    /// As specified in: [message-end](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#message-end).
     End {
         path: ArbitraryData,
         binary_offset: Option<isize>, // FIXME I am not sure it's a isize
         stats: Stats,
     },
-    /// As specified in: https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#message-match
+    /// As specified in: [message-match](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#message-match).
     Match {
         path: ArbitraryData,
         lines: ArbitraryData,
@@ -32,7 +32,7 @@ pub enum Type {
         absolute_offset: isize,
         submatches: Vec<Submatch>, //TODO Optimize
     },
-    /// As specified in: https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#message-context
+    /// As specified in: [message-context](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#message-context).
     Context {
         path: ArbitraryData,
         lines: ArbitraryData,
@@ -42,7 +42,7 @@ pub enum Type {
     },
 }
 
-/// As specified in: https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#object-arbitrary-data
+/// As specified in: [object-arbitrary-data](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#object-arbitrary-data).
 #[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
 #[serde(untagged)]
 pub enum ArbitraryData {
@@ -61,7 +61,7 @@ impl ArbitraryData {
     }
 }
 
-/// As specified in: https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#object-stats
+/// As specified in: [object-stats](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#object-stats).
 #[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
 pub struct Stats {
     pub elapsed: Duration,
@@ -73,7 +73,7 @@ pub struct Stats {
     pub matches: usize,
 }
 
-/// As specified in: https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#object-duration
+/// As specified in: [object-duration](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#object-duration).
 #[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
 pub struct Duration {
     pub secs: usize,
@@ -81,7 +81,7 @@ pub struct Duration {
     pub human: String,
 }
 
-/// Almost as specified in: https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#object-submatch
+/// Almost as specified in: [object-submatch](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#object-submatch).
 /// `match` is deserialized to `matched` because a rust reserves match as a keyword.
 /// `start` and `end` are also deserialized to `range`.
 #[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
