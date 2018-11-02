@@ -1,5 +1,5 @@
 [package]
-name = "grep_json_reader"
+name = "grep_json_deserialize"
 version = "0.1.0"
 authors = ["host"]
 # edition = "2018"
