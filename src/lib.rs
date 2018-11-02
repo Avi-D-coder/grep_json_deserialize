@@ -4,7 +4,11 @@ extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
 
+extern crate base64;
+
 // use std::ops::Range;
+
+// TODO Use `&str` where possible
 
 /// A parser for the output of [grep_printer::JSON](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html).
 /// Created to deserialize `ripgrep` `--json` output for [rg_replace](https://github.com/Avi-D-coder/rg_replace).
@@ -46,6 +50,17 @@ pub enum ArbitraryData {
     Base64 { bytes: String },
 }
 
+impl ArbitraryData {
+    pub fn lossy_utf8(&self) -> String {
+        match self {
+            ArbitraryData::Text { text } => text.to_owned(),
+            ArbitraryData::Base64 { bytes } => {
+                String::from_utf8_lossy(base64::decode(bytes).unwrap().as_slice()).to_string()
+            }
+        }
+    }
+}
+
 /// As specified in: https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#object-stats
 #[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
 pub struct Stats {
@@ -76,7 +91,7 @@ pub struct Submatch {
     pub matched: ArbitraryData,
     pub start: usize,
     pub end: usize,
-    // pub range: Range<usize>,
+    // pub range: Range<usize>, TODO
 }
 
 #[cfg(test)]
