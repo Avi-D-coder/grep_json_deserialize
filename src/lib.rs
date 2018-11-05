@@ -83,7 +83,7 @@ pub struct Duration {
 
 /// Almost as specified in: [object-submatch](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#object-submatch).
 /// `match` is deserialized to `matched` because a rust reserves match as a keyword.
-/// `start` and `end` are also deserialized to `range`.
+// TODO `start` and `end` are also deserialized to `range`.
 #[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
 #[serde(rename = "submatch")]
 pub struct Submatch {
