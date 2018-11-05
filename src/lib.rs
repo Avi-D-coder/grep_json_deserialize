@@ -30,7 +30,7 @@ pub enum Type {
         lines: ArbitraryData,
         line_number: Option<usize>,
         absolute_offset: isize,
-        submatches: Vec<Submatch>, //TODO Optimize
+        submatches: Vec<SubMatch>, //TODO Optimize
     },
     /// As specified in: [message-context](https://docs.rs/grep-printer/0.1.1/grep_printer/struct.JSON.html#message-context).
     Context {
@@ -38,7 +38,11 @@ pub enum Type {
         lines: ArbitraryData,
         line_number: Option<usize>,
         absolute_offset: isize,
-        submatches: Vec<Submatch>,
+        submatches: Vec<SubMatch>,
+    },
+    Summary {
+        elapsed_total: Duration,
+        stats: Stats,
     },
 }
 
@@ -86,7 +90,7 @@ pub struct Duration {
 // TODO `start` and `end` are also deserialized to `range`.
 #[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
 #[serde(rename = "submatch")]
-pub struct Submatch {
+pub struct SubMatch {
     #[serde(rename = "match")]
     pub matched: ArbitraryData,
     pub start: usize,
@@ -165,7 +169,7 @@ mod tests {
                 },
                 line_number: Some(5),
                 absolute_offset: 258,
-                submatches: vec![Submatch {
+                submatches: vec![SubMatch {
                     matched: Text {
                         text: "Watson".to_owned()
                     },
@@ -192,6 +196,34 @@ mod tests {
                 line_number: Some(4),
                 absolute_offset: 193,
                 submatches: vec![],
+            },
+            serde_json::from_str(json).unwrap()
+        )
+    }
+
+    #[test]
+    fn summary_deserialize() {
+        let json = r#"{"data":{"elapsed_total":{"human":"0.099726s","nanos":99726344,"secs":0},"stats":{"bytes_printed":4106,"bytes_searched":5860,"elapsed":{"human":"0.000047s","nanos":46800,"secs":0},"matched_lines":3,"matches":3,"searches":1,"searches_with_match":1}},"type":"summary"}"#;
+        assert_eq!(
+            Summary {
+                elapsed_total: Duration {
+                    human: "0.099726s".to_string(),
+                    nanos: 99726344,
+                    secs: 0
+                },
+                stats: Stats {
+                    bytes_printed: 4106,
+                    bytes_searched: 5860,
+                    elapsed: Duration {
+                        human: "0.000047s".to_owned(),
+                        nanos: 46800,
+                        secs: 0,
+                    },
+                    matched_lines: 3,
+                    matches: 3,
+                    searches: 1,
+                    searches_with_match: 1
+                }
             },
             serde_json::from_str(json).unwrap()
         )
