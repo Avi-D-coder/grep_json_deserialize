@@ -1,11 +1,12 @@
 [package]
 name = "grep_json_deserialize"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Avi ד <avi.the.coder@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/Avi-D-coder/grep_json_deserialize"
-description = "A parser for the output of ripgrep --json"
+homepage = "https://github.com/Avi-D-coder/grep_json_deserialize"
 readme = "README.md"
+description = "A parser for the output of ripgrep --json"
 keywords = ["ripgrep", "json"]
 categories = ["command-line-interface", "parsing"]
 maintenance = { status = "passively-maintained" }
