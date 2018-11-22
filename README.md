@@ -11,7 +11,8 @@ serde_json = "1.0.32"
 ```
 
 #### main.rs
-```rs
+
+```rust
 use std::process::Command;
 
 extern crate grep_json_deserialize as deserialize;
